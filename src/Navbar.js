@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Snackbar from '@material-ui/core/Snackbar';
@@ -37,7 +38,8 @@ class Navbar extends Component {
         return (
            <header className="Navbar">
                <div className="logo">
-                   <a href="/">React Farge-verktøy</a>
+                   <Link to="/">React Farge verktøy</Link>
+                   {/* <a href="/">React Farge-verktøy</a> */}
                </div>
                <div className="slider-container">
                    <span>Farge nivå: {level}</span>
