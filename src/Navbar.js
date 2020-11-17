@@ -33,7 +33,7 @@ class Navbar extends Component {
     }
     render() {
         //getting the values from props and state
-        const {level, changeLevel} = this.props;
+        const {level, changeLevel, showingAllColors} = this.props;
         const {format} = this.state;
         return (
            <header className="Navbar">
@@ -41,6 +41,7 @@ class Navbar extends Component {
                    <Link to="/">React Farge verktøy</Link>
                    {/* <a href="/">React Farge-verktøy</a> */}
                </div>
+               {showingAllColors && (
                <div className="slider-container">
                    <span>Farge nivå: {level}</span>
                 <div className="slider">
@@ -53,6 +54,7 @@ class Navbar extends Component {
                         /> 
                     </div>
                </div>
+               )}
                <div className="select-container">
                    <Select value={format} onChange={this.handleFormatChange}>
                        <MenuItem value="hex"> HEX - #ffffff</MenuItem>
