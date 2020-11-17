@@ -27,7 +27,8 @@ class Pallet extends Component {
             name={color.name} 
             key={color.id} 
             id={color.id} 
-            paletteID={id} 
+            paletteId={id}
+            showLink={true} 
             />
         )); 
         return (
@@ -38,16 +39,13 @@ class Pallet extends Component {
                 changeLevel={this.changeLevel}
                 handleChange={this.changeFormat}
                 />
-                <div className="Palette-colors">
-                    {colorBoxes}
-        
-                </div>
-            <footer className="Palette-footer">
+                <div className="Palette-colors">{colorBoxes}</div>
+                <footer className="Palette-footer">
                 {paletteName}
                 <span className="emoji">{emoji}</span>
             </footer>
           </div>
-        )
+        );
     }
 }
 
