@@ -12,9 +12,12 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import {ChromePicker} from "react-color";
+//import { Button } from '@material-ui/core';
+import Button from "@material-ui/core/Button";
 
 
-const drawerWidth = 240;
+const drawerWidth = 400;
 
 const styles = theme => ({
   root: {
@@ -130,6 +133,19 @@ class NewPaletteForm extends Component {
               </IconButton>
             </div>
             <Divider />
+            <Typography variant="h4">
+                Lag din farge Palette
+            </Typography>
+            <div>
+            <Button variant="contained" color="secondary" > Start på nytt </Button>
+            <Button variant="contained" color="primary" > Tilfeldig farge </Button>
+            </div>
+            <ChromePicker 
+                color="purple"
+                onChangeComplete={newColor => console.log(newColor)}
+            />
+            
+            <Button variant="contained" color="primary">Legg til farge</Button>
             
           </Drawer>
           <main
