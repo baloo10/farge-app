@@ -168,7 +168,15 @@ class NewPaletteForm extends Component {
             //we pass routeProps from app.js, so we can use the .history here
             this.props.history.push("/");
         }
-  
+    
+    removeColor(colorName){
+        this.setState({
+            //we are filtring out where colorName is colorName
+            colors: this.state.colors.filter(color => color.name !== colorName)
+        });
+    }
+
+
     render() { 
       const { classes, theme } = this.props;
       const { open } = this.state;  
@@ -272,7 +280,13 @@ class NewPaletteForm extends Component {
             <div className={classes.drawerHeader} />
             
                 {this.state.colors.map(color => (
-                    <DraggableColorBox color={color.color} name={color.name} /> 
+                    <DraggableColorBox 
+                        key={color.name}
+                        color={color.color} 
+                        name={color.name}
+                        //when someone click delet icon inside the draggablecolorbox component, this will fire
+                        //the removecolor method, and delet the color 
+                        handleClick={() => this.removeColor(color.name) } /> 
                         
                 ))}
             
