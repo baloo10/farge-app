@@ -84,13 +84,16 @@ const styles = theme => ({
 
 
 class NewPaletteForm extends Component {
+    static defaultProps = {
+        maxColors: 20
+    }
     constructor(props){
         super(props);
         this.state = {
             open: true,
             currentColor: "teal",
             newColorName: "",
-            colors: [{color: "blue", name: "blue"}],
+            colors: this.props.palettes[0].colors,
             newPaletteName: ""
         };
         this.updateCurrentColor = this.updateCurrentColor.bind(this);
@@ -98,6 +101,8 @@ class NewPaletteForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.removeColor = this.removeColor.bind(this);
+        this.clearColors = this.clearColors.bind(this);
+        this.addRandomColor = this.addRandomColor.bind(this);
         //this.newPaletteName = this.newPaletteName.bind(this);
     }
     
@@ -158,6 +163,21 @@ class NewPaletteForm extends Component {
         });
     }
 
+    //delet all colors, sett colors to a empty array
+    clearColors(){
+        this.setState({colors: []});
+    }
+
+    addRandomColor(){
+        //pick random color from existing palettes
+        //.flat will make the nested array into one array
+        const allColors = this.props.palettes.map( p=> p.colors).flat();
+        //give us a random number
+        var rand = Math.floor(Math.random() * allColors.length);
+        //get a random color, with the random numer rand
+        const randomColor = allColors[rand];
+        this.setState({colors: [...this.state.colors, randomColor]})
+    }
     //we pass this to the app.js componennt
     handleSubmit(){
         let newName = this.state.newPaletteName
@@ -188,8 +208,9 @@ class NewPaletteForm extends Component {
 
 
     render() { 
-      const { classes, theme } = this.props;
-      const { open } = this.state;  
+      const { classes, theme, maxColors } = this.props;
+      const { open, colors } = this.state; 
+      const paletteIsFull = colors.length >= maxColors;  
   
       return (
         <div className={classes.root}>
@@ -251,8 +272,20 @@ class NewPaletteForm extends Component {
                 Lag din farge Palette
             </Typography>
             <div>
-            <Button variant="contained" color="secondary" > Start på nytt </Button>
-            <Button variant="contained" color="primary" > Tilfeldig farge </Button>
+            <Button 
+                variant="contained" 
+                color="secondary" 
+                onClick={this.clearColors}>
+                 Slett alle farger
+             </Button>
+            <Button 
+                variant="contained" 
+                color="primary" 
+                onClick={this.addRandomColor}
+                disabled ={paletteIsFull}
+                > 
+                    Tilfeldige farger
+            </Button>
             </div>
             <ChromePicker 
                 color={this.state.currentColor}
@@ -276,9 +309,11 @@ class NewPaletteForm extends Component {
                     variant="contained" 
                     type="submit "
                     color="primary" 
-                    style= {{backgroundColor: this.state.currentColor}}
+                    disabled={paletteIsFull}
+                    style= {{backgroundColor: paletteIsFull ? "grey" : this.state.currentColor}}
                 >
-                    Legg til farge
+                    {paletteIsFull ? "Paletten er full": "Legg til farge"}
+                    
                 </Button>
             </ValidatorForm>  
           </Drawer>
