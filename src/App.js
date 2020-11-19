@@ -9,26 +9,39 @@ import { Component } from "react";
 import Pallet from "./Palette";
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state ={palettes: seedColors};
+    this.savePalette = this.savePalette.bind(this);
+    this.findPalette = this.findPalette.bind(this);
+  }
 
   findPalette(id){
-    return seedColors.find(function(palette){
+    return this.state.palettes.find(function(palette){
       return palette.id === id;
     });
   }
 
+  //we concat the new palette inside the states of palettes
+  savePalette (newPalette){
+    this.setState({palettes: [...this.state.palettes, newPalette]});
+  }
 render() {  
   return (
     <Switch>
       <Route 
         exact
         path="/palette/new"
-        render= {() => <NewPaletteForm />} 
+        //we pass in routeProps, so we can use it to redirect inside newpaletteform
+        render= {(routeProps) => <NewPaletteForm savePalette={this.savePalette}
+        {...routeProps}
+        />} 
       />
       <Route 
       exact 
       path="/" 
       render={routeProps => ( 
-      <PaletteList palettes={seedColors} {...routeProps} />  
+      <PaletteList palettes={this.state.palettes} {...routeProps} />  
         )} 
       />
       <Route 
