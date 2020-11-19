@@ -34,6 +34,7 @@ render() {
         path="/palette/new"
         //we pass in routeProps, so we can use it to redirect inside newpaletteform
         render= {(routeProps) => <NewPaletteForm savePalette={this.savePalette}
+        palettes={this.state.palettes}
         {...routeProps}
         />} 
       />
