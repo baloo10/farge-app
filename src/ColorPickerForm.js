@@ -15,6 +15,25 @@ import DraggableColorList from "./DraggableColorList";
 import {ValidatorForm, TextValidator} from "react-material-ui-form-validator";
 import {arrayMove} from "react-sortable-hoc";
 
+const styles = {
+    picker: {
+        width: "100% !important",
+        marginTop: "2rem"
+
+    },
+    addColor: {
+        width: "100%",
+        padding: "1rem",
+        marginTop: "1rem",
+        fontSize: "rem"
+    }, 
+    colorNameInput: {
+        width: "100%",
+        height:"70px"
+    }
+}
+
+
 
 class ColorPickerForm extends Component {
     constructor(props){
@@ -76,17 +95,22 @@ class ColorPickerForm extends Component {
         this.setState({n : ""});
     }
     render() {
-        const {paletteIsFull} = this.props;
+        const {paletteIsFull, classes} = this.props;
         const {currentColor, newColorName} = this.state;
         return (
             <div>
                 <ChromePicker 
                 color={this.state.currentColor}
                 onChangeComplete={this.updateCurrentColor}
+                className={classes.picker}
             />
             <ValidatorForm onSubmit={this.handleSubmit} ref="form">
                 <TextValidator 
-                value={newColorName} 
+                value={newColorName}
+                variant="filled"
+                margin="normal" 
+                className={classes.colorNameInput}
+                placeholder="Navn på farge"
                 name="newColorName"
                 onChange={this.handleChange}
                 validators={["required","isColorNameUnique", "isColorUnique"]}
@@ -101,6 +125,7 @@ class ColorPickerForm extends Component {
                     type="submit "
                     color="primary" 
                     disabled={paletteIsFull}
+                    className={classes.addColor}
                     style= {{backgroundColor: paletteIsFull ? "grey" : currentColor}}
                 >
                     {paletteIsFull ? "Paletten er full": "Legg til farge"}
@@ -112,4 +137,4 @@ class ColorPickerForm extends Component {
     }
 }
 
-export default ColorPickerForm;
+export default withStyles(styles)(ColorPickerForm);
