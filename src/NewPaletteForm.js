@@ -29,6 +29,8 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    display: "flex",
+    alignItems: "center"
   },
   drawerHeader: {
     display: 'flex',
@@ -54,6 +56,23 @@ const styles = theme => ({
     }),
     marginLeft: 0,
   },
+  container: {
+      width: "90%",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center"
+  },
+  buttons: {
+      width:"100%"
+  },
+  button: {
+      width: "50%"
+  }
+
+
+
 });
 
 
@@ -174,20 +193,24 @@ class NewPaletteForm extends Component {
               </IconButton>
             </div>
             <Divider />
-            <Typography variant="h4">
+            <div className={classes.container}>
+            <Typography variant="h4" gutterBottom>
                 Lag din farge Palette
             </Typography>
-            <div>
+            <div className={classes.buttons }>
             <Button 
                 variant="contained" 
                 color="secondary" 
-                onClick={this.clearColors}>
+                onClick={this.clearColors}
+                className={classes.button}
+                >
                  Slett alle farger
              </Button>
             <Button 
                 variant="contained" 
                 color="primary" 
                 onClick={this.addRandomColor}
+                className={classes.button}
                 disabled ={paletteIsFull}
                 > 
                     Tilfeldige farger
@@ -198,6 +221,7 @@ class NewPaletteForm extends Component {
                 addNewColor={this.addNewColor}
                 colors={colors}
                  />
+           </div>
           </Drawer>
           <main
             className={classNames(classes.content, {
