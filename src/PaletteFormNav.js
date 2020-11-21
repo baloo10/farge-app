@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Link} from "react-router-dom"
 import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
+import PaletteMetaForm from "./PaletteMetaForm"
 //import Drawer from '@material-ui/core/Drawer'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AppBar from '@material-ui/core/AppBar'
@@ -32,6 +33,7 @@ const styles = theme => ({
     }),
     flexDirection: "row", 
     justifyContent: "space-between",
+    alignItems: "center",
     height: "64px"
   },
   appBarShift: {
@@ -47,31 +49,43 @@ const styles = theme => ({
     marginRight: 20,
   },
   navBtns: {
-    color: "red"
+    marginRight: "1rem",
+    "& a": {
+      textDecoration: "none"
+    }
   },
+  button: {
+    margin: "0 0.5rem",
+    "& a": {
+      textDecoration: "none"
+    }
+  },
+  link:{
+    textDecoration: "none"
+  }
 }); 
 
 class PaletteFormNav extends Component {
     constructor(props){
         super(props);
-        this.state = { newPaletteName: "" };
+        this.state = { newPaletteName: "", formShowing: true };
         this.handleChange = this.handleChange.bind(this);
+        this.showForm = this.showForm.bind(this);
     }
-
-    componentDidMount(){
-        ValidatorForm.addValidationRule("isPalettNameUnique", (value) =>
-            this.props.palettes.every(
-                ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase())
-        );
-    }
-
+  
     handleChange(evt){
         this.setState({
             [evt.target.name]: evt.target.value
         });
     }
+
+    //when user press button, this fuction will fire, and will set the state to the form into true
+    //and then the form willl show
+     showForm(){
+      this.setState({formShowing: true})
+    }
     render() {
-        const {classes, open} = this.props;
+        const {classes, open, palettes, handleSubmit} = this.props;
         const {newPaletteName} = this.state;
         return (
             <div className={classes.root}>
@@ -95,31 +109,27 @@ class PaletteFormNav extends Component {
               <Typography variant="h6" color="inherit" noWrap>
                 Lag en ny palett
               </Typography>
-              
             </Toolbar>
             <div className={classes.navBtns}> 
-              <ValidatorForm onSubmit={() => this.props.handleSubmit(newPaletteName ) }> 
-                <TextValidator 
-                    label="Palett navn" 
-                    value ={this.state.newPaletteName}
-                    name="newPaletteName"
-                    onChange={this.handleChange}
-                    validators={["required", "isPalettNameUnique"]}
-                    errorMessages={["*Tast inn palett navn", "Navn allerede tatt"]}
-                    />
+                  
+                  <Link to="/">
+                        <Button variant="contained" color="secondary" className={classes.button}>Tilbake</Button>
+                    </Link>
+
                     <Button 
                         variant="contained" 
-                        color="primary"
-                        type="submit"
+                        color="primary" 
+                        onClick={this.showForm}
+                        className={classes.button}
                         >
-                            Lagre fargepalett
-                    </Button> 
-                </ValidatorForm>
-                <     Link to="/">
-                        <Button variant="contained" color="secondary">Tilbake</Button>
-                    </Link>
+                        Lagre
+                    </Button>
                 </div>
           </AppBar>
+                  {this.state.formShowing && (
+                    <PaletteMetaForm palettes={palettes}handleSubmit={handleSubmit} 
+                    />
+                  )}
             </div>
         )
     }
