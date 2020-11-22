@@ -18,10 +18,13 @@ class PaletteMetaForm extends React.Component {
         constructor(props){
         super(props);
         this.state = {
-            open: true,
+            //open: true,
+            stage: "form",
             newPaletteName: ""
         };
         this.handleChange = this.handleChange.bind(this);
+        this.showEmojiPicker = this.showEmojiPicker.bind(this);
+        this.savePalette = this.savePalette.bind(this);
 
     }
     componentDidMount(){
@@ -46,27 +49,46 @@ class PaletteMetaForm extends React.Component {
     handleClose = () => {
       this.setState({ open: false });
     };
+
+    //after first form it is submit, the stage is "form", after submit first form
+    //it will submit to to this function, that will change the state to
+    //emoji, and the first form will go away, and the emoji form will appear
+    showEmojiPicker(){
+        this.setState({stage: "emoji" })
+    }
+
+    //when you click an a emoji, then you save a palette
+    savePalette(emoji){
+        const newPalette = {
+             paletteName: this.state.newPaletteName, 
+             emoji: emoji.native 
+            };
+            this.props.handleSubmit(newPalette)
+    }
   
     render() {
         const {palettes, handleSubmit, hideForm} = this.props;
         const {newPaletteName} = this.state;
       return (
-        
-          
+          <div>
+            
+          <Dialog open={this.state.stage === "emoji"}>
+          <DialogTitle id="form-dialog-title">Velg emoji til din palett</DialogTitle>
+              <Picker title="Din emoji" onSelect={this.savePalette}/>
+          </Dialog>
           <Dialog
-            open={this.state.open}
+            open={this.state.stage === "form"}
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
             onClose={hideForm} //when user click outside the form, the form will also close 
           >
             <DialogTitle id="form-dialog-title">Velg palett navn</DialogTitle>
-            <ValidatorForm onSubmit={() => handleSubmit(newPaletteName) }> 
+            <ValidatorForm onSubmit= {this.showEmojiPicker} > 
             <DialogContent>
               <DialogContentText>
                  Skriv inn navnet på din nye palett. Pass på at navnet er unikt!
               </DialogContentText>
 
-              <Picker />
                 <TextValidator 
                     label="Palett navn" 
                     value ={newPaletteName}
@@ -94,7 +116,7 @@ class PaletteMetaForm extends React.Component {
             </DialogActions>
             </ValidatorForm>
           </Dialog>
-        
+          </div> 
       );
     }
   }

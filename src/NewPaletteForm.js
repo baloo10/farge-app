@@ -137,13 +137,12 @@ class NewPaletteForm extends Component {
         this.setState({colors: [...this.state.colors, randomColor]})
     }
     //we pass this to the app.js componennt
-    handleSubmit(newPaletteName){
-        const newPalette = {
-            paletteName: newPaletteName, 
+    handleSubmit(newPalette){
+     
             //we replace "space" with a "-"
-            id: newPaletteName.toLowerCase().replace(/ /g, "-"),
-            colors: this.state.colors
-        };
+            newPalette.id = newPalette.paletteName.toLowerCase().replace(/ /g, "-");
+            newPalette.colors = this.state.colors; 
+            //we take newPalette and save it here
             this.props.savePalette(newPalette);
             //we pass routeProps from app.js, so we can use the .history here
             this.props.history.push("/");
