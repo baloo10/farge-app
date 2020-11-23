@@ -18,6 +18,7 @@ class App extends Component {
     this.state ={palettes: savedPalettes || seedColors };
     this.savePalette = this.savePalette.bind(this);
     this.findPalette = this.findPalette.bind(this);
+    this.deletePalette = this.deletePalette.bind(this);
   }
 
   findPalette(id){
@@ -26,8 +27,21 @@ class App extends Component {
     });
   }
 
+  //st is the old statet
+  //filter for each palett, where that palettid is not equal to the id that is been passed in
+  //we will filter all the paletts that dont match the id, 
+  // this will leav out the singel on, that has that id, and then set state with the rest
+  //then we call localstorge, that will updated localstorage with the new version of paletts
+  deletePalette (id){
+    this.setState( 
+      st => ({palettes: st.palettes.filter(palette => palette.id !== id)}),
+      this.syncLocalStorage
+    )
+  }
+
   //we concat the new palette inside the states of palettes
   //we add a callback function, when state is updated, then we call syncLocalStorage
+  
   savePalette (newPalette){
     this.setState({palettes: [...this.state.palettes, newPalette]}, 
       this.syncLocalStorage
@@ -60,7 +74,10 @@ render() {
       exact 
       path="/" 
       render={routeProps => ( 
-      <PaletteList palettes={this.state.palettes} {...routeProps} />  
+      <PaletteList 
+        palettes={this.state.palettes}
+        deletePalette={this.deletePalette}
+        {...routeProps} />  
         )} 
       />
       <Route 
