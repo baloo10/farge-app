@@ -11,7 +11,11 @@ import Pallet from "./Palette";
 class App extends Component {
   constructor(props){
     super(props);
-    this.state ={palettes: seedColors};
+
+    //we check first if we have some saved palettes in local storage
+    //if its not, then we use seedColors
+    const savedPalettes = JSON.parse(window.localStorage.getItem("palettes"));
+    this.state ={palettes: savedPalettes || seedColors };
     this.savePalette = this.savePalette.bind(this);
     this.findPalette = this.findPalette.bind(this);
   }
@@ -23,9 +27,23 @@ class App extends Component {
   }
 
   //we concat the new palette inside the states of palettes
+  //we add a callback function, when state is updated, then we call syncLocalStorage
   savePalette (newPalette){
-    this.setState({palettes: [...this.state.palettes, newPalette]});
+    this.setState({palettes: [...this.state.palettes, newPalette]}, 
+      this.syncLocalStorage
+      );
   }
+
+  syncLocalStorage(){
+    //save palettes to local storage
+    // the key is palette
+    //local storage wants string, so JSON.stringify
+    window.localStorage.setItem(
+      "palettes",
+      JSON.stringify(this.state.palettes)
+    );
+  }
+
 render() {  
   return (
     <Switch>
