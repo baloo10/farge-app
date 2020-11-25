@@ -175,6 +175,7 @@ class NewPaletteForm extends Component {
                 removeColor={this.removeColor} 
                 axis="xy"
                 onSortEnd={this.onSortEnd}
+                distance={20}//the drag will not count as a drag, unless you drag the square 20px
                 />
           </main>
         </div>
