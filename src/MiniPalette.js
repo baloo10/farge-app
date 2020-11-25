@@ -16,7 +16,7 @@ class MiniPalette extends Component {
         /* The stopPropagation() method of the Event interface prevents further 
         propagation of the current event in the capturing and bubbling phases. */
         e.stopPropagation();
-        this.props.handleDelete(this.props.id);
+        this.props.openDialog(this.props.id);
     }
     render(){
 

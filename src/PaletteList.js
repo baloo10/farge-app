@@ -1,17 +1,53 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Avatar from "@material-ui/core/Avatar"
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import CheckIcon from "@material-ui/icons/Check"
+import CloseIcon from "@material-ui/icons/Close"
+import ListItemText from '@material-ui/core/ListItemText';
 import {CSSTransition, TransitionGroup,} from 'react-transition-group';
 import MiniPalette from "./MiniPalette";
 import {withStyles} from "@material-ui/styles";
 import styles from "./styles/PaletteListStyles";
+import blue from "@material-ui/core/colors/blue"
+import red from "@material-ui/core/colors/red"
 
 
 class PaletteList extends Component {
+    constructor(props) {
+        super(props);
+        this.state ={
+            openDialog: false,
+            deletingId: ""
+        };
+        this.openDialog = this.openDialog.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
+        this.handleDelete = this. handleDelete.bind(this);
+
+    }
+
+    openDialog(id){
+        this.setState({openDialog: true, deletingId: id})
+    }
+
+    closeDialog(){
+         this.setState({openDialog: false, deletingId: ""})
+    }
     goToPalette(id){
         this.props.history.push(`/palette/${id}`)
     }
+
+    handleDelete(){
+        this.props.deletePalette(this.state.deletingId);
+        this.closeDialog();
+    }
     render() {
         const {palettes, classes, deletePalette } = this.props;
+        const {openDialog, deletingId} = this.state;
         //we send all props into MinPallet with {...palettes}}  
 
         return (
@@ -31,15 +67,46 @@ class PaletteList extends Component {
                             >
                             <MiniPalette {...palette} 
                             handleClick={() => this.goToPalette(palette.id)}
-                            handleDelete={deletePalette} 
+                            //handleDelete={deletePalette} 
+                            openDialog={this.openDialog}
                             key={palette.id}
                             id={palette.id}
                             />
                         </CSSTransition>
                         ))}
                         </TransitionGroup>
-                    
                 </div>
+                <Dialog 
+                    open={openDialog} 
+                    aria-labelledby="delete-dialog-title" 
+                    onClose={this.closeDialog}
+                    >
+                        <DialogTitle id="delete-dialog-title">Slette paletten?</DialogTitle> 
+                        <List>
+                            <ListItem button onClick={this.handleDelete}>
+                                <ListItemAvatar>
+                                    <Avatar
+                                        style={{backgroundColor: blue[100], color: blue[600]}}
+                                    >
+                                        <CheckIcon>
+
+                                        </CheckIcon>
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Slett"/>
+                            </ListItem>
+                            <ListItem button onClick={this.closeDialog}>
+                                <ListItemAvatar>
+                                    <Avatar
+                                    style={{backgroundColor: red[100], color: red[600]}}
+                                    >
+                                        <CloseIcon/>
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Avbryt"/>
+                            </ListItem>
+                        </List>
+                </Dialog>
             </div>
         );
     }
