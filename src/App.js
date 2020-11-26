@@ -6,7 +6,7 @@ import Palette from "./Palette";
 import PaletteList from "./PaletteList";
 import SingleColorPalette from "./SingleColorPalette";
 import NewPaletteForm from "./NewPaletteForm";
-import Pallet from "./Palette";
+ import Pallet from "./Palette";
 import Page from "./Page";
 
 import {generatePalette} from "./ColorHelpers";

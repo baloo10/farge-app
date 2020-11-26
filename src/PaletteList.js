@@ -14,6 +14,8 @@ import blue from "@material-ui/core/colors/blue"
 import red from "@material-ui/core/colors/red"
 import MiniPalette from "./MiniPalette";
 import styles from "./styles/PaletteListStyles";
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 
 
 class PaletteList extends Component {
