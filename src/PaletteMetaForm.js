@@ -66,17 +66,17 @@ class PaletteMetaForm extends React.Component {
     }
   
     render() {
-        const {palettes, handleSubmit, hideForm} = this.props;
-        const {newPaletteName} = this.state;
+        const {palettes, hideForm} = this.props;
+        const {newPaletteName, stage} = this.state;
       return (
           <div>
             
-          <Dialog open={this.state.stage === "emoji"}>
+          <Dialog open={stage === "emoji"}>
           <DialogTitle id="form-dialog-title">Velg emoji til din palett</DialogTitle>
               <Picker title="Din emoji" onSelect={this.savePalette}/>
           </Dialog>
           <Dialog
-            open={this.state.stage === "form"}
+            open={stage === "form"}
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
             onClose={hideForm} //when user click outside the form, the form will also close 
