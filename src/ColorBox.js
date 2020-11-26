@@ -5,10 +5,7 @@ import {Link} from "react-router-dom";
 //import chroma from "chroma-js";
 import {withStyles, withTheme} from "@material-ui/styles";
 import styles from "./styles/ColorBoxStyles";
-//import "./ColorBox.css"
-
-
-//define my styles
+import classNames from "classnames"
 
 
 
@@ -36,9 +33,19 @@ class ColorBox extends Component {
                     <div 
                     style={{background}}
                     //if copies is true, then we add the class show
-                     className={`${classes.copyOverlay} ${copied && classes.showOverlay}`}   
-                     />
-                     <div className={`${classes.copyMessage} ${copied && classes.showMessage}`}>
+                     //className={`${classes.copyOverlay} ${copied && classes.showOverlay}`}
+                     //we want classescopyOverlay always, and then optional we want classes.showOeverlay
+                     //classes.showOeverlay only when copied is true
+                     //we add dynamics classes here
+                     className={classNames(classes.copyOverlay, {
+                         [classes.showOverlay]: copied
+                        })}
+                    />
+
+                     
+                     <div className={classNames(classes.copyMessage, {
+                         [classes.showMessage ]: copied
+                        })}>
                          <h1>Kopiert</h1>
                          <p className={classes.copyText }>{this.props.background}</p>
                      </div>
