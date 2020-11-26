@@ -125,6 +125,19 @@ render() {
             </Page>
             )} 
           />
+          //** Route if user type a adress that is not valid, if the adress is not correct
+          we send the user to the PaletteList site */
+          <Route  
+          render={routeProps => (
+            <Page>   
+              <PaletteList 
+                palettes={this.state.palettes}
+                deletePalette={this.deletePalette}
+                {...routeProps} />  
+              />
+              </Page>
+            )} 
+          />
       </Switch>
     </CSSTransition>
     </TransitionGroup>
